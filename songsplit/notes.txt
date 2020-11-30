@@ -1,0 +1,4 @@
+
+ADD TO FFMPEG OUTPUT COMMAND:
+    -write_xing 0
+

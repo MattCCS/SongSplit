@@ -1,4 +1,5 @@
-venv.txt
+venv/
+scratch/
 
 .DS_Store
 
