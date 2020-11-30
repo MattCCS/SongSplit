@@ -9,6 +9,7 @@ REQUIRES ffmpeg + pydub!
 import argparse
 import pathlib
 import re
+import shutil
 
 from pydub import AudioSegment
 
@@ -73,9 +74,9 @@ def split(filename, timeranges, folder=None):
         sub = song[s:e]
         sub.export(outfile_temp, format='mp4')
         if folder:
-            outfile_temp.rename(folder / outfile)
+            shutil.move(outfile_temp, folder / outfile)
         else:
-            outfile_temp.rename(outfile)
+            shutil.move(outfile_temp, outfile)
 
 
 def parse_args():
@@ -89,9 +90,11 @@ def parse_args():
 def main():
     args = parse_args()
 
-    folder = pathlib.Path(args.folder.replace('/', ':'))
-    if folder:
+    if args.folder:
+        folder = pathlib.Path(args.folder.replace('/', ':'))
         folder.mkdir(exist_ok=True)
+    else:
+        folder = pathlib.Path(args.filename).parent
 
     timeranges = split_times('\n'.join(args.timestamps))
     split(args.filename, timeranges, folder=folder)
